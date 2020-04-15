@@ -1,21 +1,17 @@
-package controller;
+package client.controller;
 
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.Usuario;
+import client.model.Usuario;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 
 public class RegistroController{
@@ -56,7 +52,7 @@ public class RegistroController{
         if (usuario.verificarRegistro()) {
             Stage newStage = new Stage();
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/nuevaVentana.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/client/view/ventanaMensajes.fxml"));
                 Scene scene = new Scene(root);
                 Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 appStage.setScene(scene);
@@ -65,7 +61,7 @@ public class RegistroController{
 
                 //Así abrimos una ventana nueva.
                 /*
-                AnchorPane page = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/nuevaVentana.fxml"));
+                AnchorPane page = (AnchorPane) FXMLLoader.load(getClass().getResource("/view/ventanaMensajes.fxml"));
                 Scene scene = new Scene(page);
                 newStage.setScene(scene);
                 newStage.show();

@@ -1,11 +1,9 @@
-package model;
+package client.model;
 
-import javafx.scene.text.Text;
-
-import java.io.IOException;
+import java.io.Serializable;
 import java.sql.*;
 
-public class Usuario {
+public class Usuario implements Serializable {
 
     private String nick, contraseña, nombre, apellido1, apellido2, ip;
 
@@ -15,8 +13,6 @@ public class Usuario {
     }
 
     //Constructor para el registro
-
-
     public Usuario(String nick, String contraseña, String nombre, String apellido1, String apellido2) {
         this.nick = nick;
         this.contraseña = contraseña;

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.NuevaVentanaController">
+<AnchorPane prefHeight="500.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.controller.VentanaMensajesController">
    <children>
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="400.0">
         <menus>
@@ -24,5 +24,8 @@
           </Menu>
         </menus>
       </MenuBar>
+      <TextArea fx:id="tfVentanaChat" layoutX="23.0" layoutY="53.0" prefHeight="377.0" prefWidth="354.0" />
+      <TextField fx:id="tfVentanaEnvio" layoutX="23.0" layoutY="448.0" prefHeight="25.0" prefWidth="276.0" />
+      <Button layoutX="312.0" layoutY="448.0" mnemonicParsing="false" onAction="#EnviarMensaje" prefHeight="25.0" prefWidth="65.0" text="Enviar" />
    </children>
 </AnchorPane>

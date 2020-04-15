@@ -1,4 +1,4 @@
-package controller;
+package client.controller;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -9,7 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import model.Usuario;
+import client.model.Usuario;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -44,7 +44,7 @@ public class LoginController implements Initializable {
 
                 //Metodo antigüo para abrir una ventana, es mejor el de arriba.
                 /*
-                ventana1 = FXMLLoader.load(getClass().getResource("/view/nuevaVentana.fxml"));
+                ventana1 = FXMLLoader.load(getClass().getResource("/view/ventanaMensajes.fxml"));
                 base.setCenter(ventana1);
                 base.getChildren().remove(anchorBase);
                  */
@@ -101,8 +101,8 @@ public class LoginController implements Initializable {
 
         //Precarga de las ventanas a las que podemos acceder desde el login
         try {
-            ventana1 = FXMLLoader.load(getClass().getResource("/view/nuevaVentana.fxml"));
-            ventana2 = FXMLLoader.load(getClass().getResource("/view/registro.fxml"));
+            ventana1 = FXMLLoader.load(getClass().getResource("/client/view/ventanaMensajes.fxml"));
+            ventana2 = FXMLLoader.load(getClass().getResource("/client/view/registro.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
