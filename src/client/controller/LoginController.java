@@ -11,11 +11,16 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import client.model.Usuario;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
+public class LoginController implements Initializable, Runnable{
 
     @FXML
     protected BorderPane base;
@@ -27,31 +32,40 @@ public class LoginController implements Initializable {
 
     private Parent ventana1, ventana2;
     private Usuario usuario;
+    private Boolean verificacionLogin;
+    private Thread thread;
 
+
+    public LoginController(){
+
+    }
 
 
     //Método para el boton entrar del login
     public void Entrar(Event event) throws IOException {
 
-        usuario = new Usuario();
-        usuario.setNick(tfUsuario.getText());
-        usuario.setContraseña(tfContraseña.getText());
+        usuario = new Usuario(tfUsuario.getText(), tfContraseña.getText(), InetAddress.getLocalHost().getHostAddress());
+        usuario.verificarLogin();
 
+        thread = new Thread(this);
+        thread.start();
         try {
-            if(usuario.verificarLogin()){
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (verificacionLogin != null) {
+            if (verificacionLogin) {
                 Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 appStage.setScene(new Scene(ventana1));
-
-                //Metodo antigüo para abrir una ventana, es mejor el de arriba.
-                /*
-                ventana1 = FXMLLoader.load(getClass().getResource("/view/ventanaMensajes.fxml"));
-                base.setCenter(ventana1);
-                base.getChildren().remove(anchorBase);
-                 */
+            } else{
+                labelError.setVisible(true);
             }
-            else labelError.setVisible(true);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }
+        else {
+            labelError.setText("Conexion fallida");
+            labelError.setVisible(true);
         }
     }
 
@@ -64,11 +78,11 @@ public class LoginController implements Initializable {
 
 
     //Método que se carga en initialize() para dar al boton entrar al pulsar enter
-    public void EntrarConEnter(){
+    public void EntrarConEnter() {
         tfUsuario.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.ENTER){
+                if (event.getCode() == KeyCode.ENTER) {
                     try {
                         Entrar(event);
                     } catch (IOException e) {
@@ -81,7 +95,7 @@ public class LoginController implements Initializable {
         tfContraseña.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.ENTER){
+                if (event.getCode() == KeyCode.ENTER) {
                     try {
                         Entrar(event);
                     } catch (IOException e) {
@@ -92,6 +106,7 @@ public class LoginController implements Initializable {
         });
     }
 
+
     //Metodo obligatorio de la intefaz Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -101,11 +116,29 @@ public class LoginController implements Initializable {
 
         //Precarga de las ventanas a las que podemos acceder desde el login
         try {
-            ventana1 = FXMLLoader.load(getClass().getResource("/client/view/ventanaMensajes.fxml"));
+            ventana1 = FXMLLoader.load(getClass().getResource("/client/view/ventanaAmigos.fxml"));
             ventana2 = FXMLLoader.load(getClass().getResource("/client/view/registro.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void run() {
+        try {
+            ServerSocket serverSocket = new ServerSocket(9997);
+
+            Socket socket = serverSocket.accept();
+            ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+            verificacionLogin = objectInputStream.readBoolean();
+
+            objectInputStream.close();
+            socket.close();
+            serverSocket.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

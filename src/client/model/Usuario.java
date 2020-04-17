@@ -1,79 +1,46 @@
 package client.model;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.*;
 
-public class Usuario implements Serializable {
+public class Usuario implements Serializable, Runnable{
 
     private String nick, contraseña, nombre, apellido1, apellido2, ip;
 
-    //Constructor para el login ya que usamos los setters de nombre y contraseña
-    public Usuario(){
 
+    //Constructor sin datos por si hiciese falta
+    public  Usuario(){}
+
+    //Constructor para el login ya que usamos los setters de nombre y contraseña
+    public Usuario(String nick, String contraseña, String ip){
+        this.nick = nick;
+        this.contraseña = contraseña;
+        this.ip = ip;
     }
 
-    //Constructor para el registro
-    public Usuario(String nick, String contraseña, String nombre, String apellido1, String apellido2) {
+    //Constructor para el registro con todos los datos
+    public Usuario(String nick, String contraseña, String nombre, String apellido1, String apellido2, String ip) {
         this.nick = nick;
         this.contraseña = contraseña;
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.apellido2 = apellido2;
-    }
-
-    public boolean verificarLogin() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat", "root", "");
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("SELECT nick, contraseña FROM usuario where nick='"+getNick()+"' and contraseña='"+getContraseña()+"'");
-        while (resultSet.next()){
-            if(resultSet.getString(1).equalsIgnoreCase(getNick()) && resultSet.getString(2).equalsIgnoreCase(getContraseña())){
-                statement.close();
-                connection.close();
-                return true;
-            }
-            else{
-                statement.close();
-                connection.close();
-                return false;
-            }
-        }
-        statement.close();
-        connection.close();
-        return false;
+        this.ip = ip;
     }
 
 
-    public boolean verificarRegistro(){
+    public void verificarLogin() throws IOException {
+        Socket socket = new Socket("192.168.1.35", 9999);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
-        try {
-
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/chat", "root", "");
-            Statement statement = connection.createStatement();
-
-            ResultSet resultSet = statement.executeQuery("SELECT nick FROM usuario WHERE nick='" + nick + "'");
-
-            while (resultSet.next()) {
-                if (resultSet.getString(1).equalsIgnoreCase(nick)) {
-                    statement.close();
-                    connection.close();
-                    return false;
-                }
-            }
-
-            statement.executeUpdate("INSERT INTO usuario(nick, contraseña, nombre, apellido1, apellido2) VALUES('" + nick + "', '" + contraseña + "', '" + nombre + "', '" + apellido1 + "', '" + apellido2 + "')");
-
-            statement.close();
-            connection.close();
-
-        }catch (SQLException e){
-            e.printStackTrace();
-            System.out.println("Interacción con la base de datos fallida");
-            return false;
-        }
-
-        return true;
+        objectOutputStream.writeObject(this);
+        objectOutputStream.close();
+        socket.close();
     }
-
 
 
 
@@ -124,5 +91,13 @@ public class Usuario implements Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+
+
+    @Override
+    public void run() {
+
+
     }
 }
