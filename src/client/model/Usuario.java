@@ -43,7 +43,7 @@ public class Usuario implements Serializable, Runnable{
     }
 
     public void verificarRegistro() throws IOException {
-        Socket socket = new Socket("192.168.1.35", 9999);
+        Socket socket = new Socket("192.168.1.35", 9994);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
 
         objectOutputStream.writeObject(this);

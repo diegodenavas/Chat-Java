@@ -41,13 +41,16 @@ public class IniciaServidor extends JFrame implements Runnable{
                 ServerSocket serverSocket = new ServerSocket(9999);
 
                 VerificaLogin verificaLogin = new VerificaLogin();
+                VerificaRegistro verificaRegistro = new VerificaRegistro();
 
                 Socket socket = serverSocket.accept();
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
                 usuario = (Usuario) objectInputStream.readObject();
 
+
                 if (verificaLogin.verificarLogin(usuario)) areatexto.append("Verificado correctamente\n");
                 else areatexto.append("no verificado\n");
+
 
                 //areatexto.append(usuario.getNick() + ":" + usuario.getContraseña());
                 objectInputStream.close();

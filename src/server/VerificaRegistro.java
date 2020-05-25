@@ -18,7 +18,6 @@ public class VerificaRegistro implements Runnable{
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT nick FROM usuario where nick='" + usuario.getNick()+ "'");
         if (resultSet.next()){
-
             resultSet.close();
             statement.close();
             connection.close();
@@ -40,7 +39,7 @@ public class VerificaRegistro implements Runnable{
     public void run() {
         try {
             while (true) {
-                ServerSocket serverSocket = new ServerSocket(9996);
+                ServerSocket serverSocket = new ServerSocket(9994);
 
                 Socket socket = serverSocket.accept();
                 ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
@@ -50,7 +49,7 @@ public class VerificaRegistro implements Runnable{
                 objectInputStream.close();
                 socket.close();
 
-                Socket salida = new Socket("192.168.1.35", 9995);
+                Socket salida = new Socket("192.168.1.35", 9993);
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(salida.getOutputStream());
                 objectOutputStream.writeBoolean(verificarRegistro(usuario));
 

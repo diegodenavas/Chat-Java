@@ -22,12 +22,12 @@
       <Label layoutX="126.0" layoutY="285.0" text="Segundo apellido" />
       <TextField fx:id="tfSegundoApellido" layoutX="126.0" layoutY="304.0" />
       <Button layoutX="171.0" layoutY="349.0" mnemonicParsing="false" onAction="#Ingresar" text="Ingresar" />
-      <Text fx:id="errorLinea1" layoutX="59.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Los campos usuario, nombre y apellidos no pueden ">
+      <Text fx:id="errorLinea1" layoutX="59.0" layoutY="397.0" strokeType="OUTSIDE" strokeWidth="0.0" text="* Los campos usuario, nombre y apellidos no pueden " visible="false">
          <font>
             <Font size="11.0" />
          </font>
       </Text>
-      <Text fx:id="errorLinea2" layoutX="68.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tener mas de 20 caractéres">
+      <Text fx:id="errorLinea2" layoutX="68.0" layoutY="412.0" strokeType="OUTSIDE" strokeWidth="0.0" text="tener mas de 20 caractéres" visible="false">
          <font>
             <Font size="11.0" />
          </font>
