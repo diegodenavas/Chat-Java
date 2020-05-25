@@ -30,27 +30,9 @@ public class RegistroController implements Runnable{
         usuario = new Usuario(tfUsuario.getText(), tfContraseña.getText(), tfNombre.getText(), tfPrimerApellido.getText(), tfSegundoApellido.getText(), InetAddress.getLocalHost().getHostAddress());
         usuario.verificarLogin();
 
-        thread = new Thread(this);
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        if (verificacionLogin != null) {
-            if (verificacionLogin) {
-                Stage appStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                appStage.setScene(new Scene(ventana1));
-            } else{
-                labelError.setVisible(true);
-            }
-        }
-        else {
-            labelError.setText("Conexion fallida");
-            labelError.setVisible(true);
-        }
     }
+
 
 
     @Override
